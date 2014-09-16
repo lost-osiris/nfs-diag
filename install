@@ -2,5 +2,5 @@
 
 script="#!/bin/bash\npython $1/nfs.py"
 touch $1/nfs-diag
-echo $script > $2/nfs-diag
+echo $script > $1/nfs-diag
 
