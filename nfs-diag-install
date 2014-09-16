@@ -1,7 +1,6 @@
 #!/bin/bash
 
-start_script="#!/bin/bash"
-script="python $1nfs.py"
-total=$(echo -e $start_script; echo -e "\n$script")
+script="#!/bin/bash"
+script="$script \npython $1nfs.py"
 touch $1nfs-diag
-echo $total > $1nfs-diag
+echo -e $script > $1nfs-diag
