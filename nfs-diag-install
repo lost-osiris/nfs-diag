@@ -1,8 +1,8 @@
 #!/bin/bash
 
 script="#!/bin/bash"
-script="$script \npython $1nfs.py"
+
+new_path=$(echo $1 | sed s/.*nfs.*/''/g)
+script="$script \npython /$(echo -e $new_path)nfs.py"
 touch $1nfs-diag
 echo -e $script > $1nfs-diag
-echo -e "\n\n\n"
-pwd ./
