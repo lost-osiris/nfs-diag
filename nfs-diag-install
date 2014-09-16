@@ -2,7 +2,7 @@
 
 script="#!/bin/bash"
 
-new_path=$(echo $1 | sed s/.*nfs.*/''/g)
+new_path=$(echo $1 | sed s/".*nfs.*/end"/''/g)
 script="$script \npython /$(echo -e $new_path)nfs.py"
 touch $1nfs-diag
 echo -e $script > $1nfs-diag
