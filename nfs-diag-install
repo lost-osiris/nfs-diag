@@ -1,6 +1,7 @@
 #!/bin/bash
 
-script="#!/bin/bash\npython $1nfs.py"
+start_script="#!/bin/bash"
+script="python $1nfs.py"
 touch $1nfs-diag
+echo $start_script > $1nfs-diag
 echo $script > $1nfs-diag
-
