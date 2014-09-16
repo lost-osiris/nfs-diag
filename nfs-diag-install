@@ -4,3 +4,5 @@ script="#!/bin/bash"
 script="$script \npython $1nfs.py"
 touch $1nfs-diag
 echo -e $script > $1nfs-diag
+echo -e "\n\n\n"
+pwd ./
