@@ -31,10 +31,20 @@ class Auto:
       for key, value in self.data['servers'].items():
          ip = key
          interface = self.find_interface(ip)
-         TcpDump(self, ip, interface)
-         #process = Process(target=TcpDump, args=(self, ip, interface))
-         #process.start()
-         #print process.pid
+         tcp = TcpDump(self, ip, interface)
+         pool.append(tcp)
+         print "*** Running tcpdump on the following pid:", tcp.get_pid(), "***"
+         
+      print "If you want to exit hit \"CTRL + c\""
+      try: 
+         while True:
+            continue
+      except KeyboardInterrupt:
+         print "\n\n*** Closing Program ***"
+         for i in pool:
+            i.stop_tcpdump()
+         print "*** Done ***"
+         sys.exit()
 
    def find_ip(self):
       output = subprocess.Popen(['cat', '/proc/mounts'], stdout=subprocess.PIPE)
@@ -128,32 +138,33 @@ class Manual(Auto):
      
       options = range(0, len(data['servers']))
    
-      user = raw_input(output)
-      while True:
-         #try:
-         user = int(user)
-      
-         if user in options:
-            for key, value in mapping['servers'].items():
-               if value['mapping'] == user:
-                  tcp = TcpDump(self, value['server_ip'], value['interface'])
-                  print "*** Running tcpdump on the following pids: ", tcp.get_pids(), " ***"
-                  print "If you want to exit hit \"CTRL + c\""
-                  try: 
-                     while True:
-                        continue
-                  except KeyboardInterrupt:
-                     print "\nExiting"
-                     tcp.stop_tcpdump()
-                     print "*** Done ***"
-                     sys.exit(1)
-            break
-         '''
-         except:
-            print "\n*** Invalid selection ***\n"
-            user = raw_input("Which server would you like to test on " + str(range(0, len(data['servers']))) + ": ")
-         '''   
-      
+      try: 
+         user = raw_input(output)
+         while True:
+            try:
+               user = int(user)
+            
+               if user in options:
+                  for key, value in mapping['servers'].items():
+                     if value['mapping'] == user:
+                        tcp = TcpDump(self, value['server_ip'], value['interface'])
+                        print "*** Running tcpdump on the following pid:", tcp.get_pid(), "***"
+                        print "If you want to exit hit \"CTRL + c\""
+                        try: 
+                           while True:
+                              continue
+                        except KeyboardInterrupt:
+                           print "\nExiting"
+                           tcp.stop_tcpdump()
+                           print "*** Done ***"
+                           sys.exit()
+                  break
+            except Exception, e:
+               print "\n*** Invalid selection ***\n"
+               user = raw_input("Which server would you like to test on " + str(range(0, len(data['servers']))) + ": ")
+      except KeyboardInterrupt:
+         print "\nExiting"
+         sys.exit(1)
 
 class TcpDump(Auto, Manual):
    def __init__(self, obj, ip, interface):
@@ -187,6 +198,25 @@ class TcpDump(Auto, Manual):
       self.pids['parent'] = os.getppid()
       self.pids['main'] = os.getpid()
       self.pids['multiprocessing'] = self.process.pid
+
+      self.process_check = Process(target=self.check_tcpdump, args=())
+      self.process_check.start()
+
+      self.pids['check_tcpdump'] = self.process_check.pid
+
+   def check_tcpdump(self):
+      while True:
+         check = self.check_pid(self.pids['subprocess'])
+         if check == True:
+            continue
+         elif check == False:
+            message = "\n*** Tcpdump on HOST (" + self.ip + ") and on INTERFACE (" + self.interface + ") has STOP ***\n"
+            message += "Time Ended: " + time.strftime("[%X %x TimeZone: %Z]") + "\n"
+            print message
+            self.stop_tcpdump()
+            break
+         else:
+            break
  
    def run_tcpdump(self):
       message = "\nTesting Host: " + self.ip
@@ -204,17 +234,38 @@ class TcpDump(Auto, Manual):
          sys.exit(1)
 
    def stop_tcpdump(self):
-      self.sub_process.terminate()
+      try:
+         self.process_check.terminate()
+         self.sub_process.terminate()
 
-      self.output_file.write(str("Tcpdump command: \"" + self.tcpdump_command + "\"\n"))
-      self.output_file.write(str(self.sub_process.communicate()[1] + "\n"))
+         try:
+            self.output_file.write(str("Tcpdump command: \"" + self.tcpdump_command + "\"\n"))
+            for i in self.sub_process.stderr:
+               self.output_file.write(str(i + "\n"))
 
-      self.output_file.close()
-      self.process.terminate()
+            self.output_file.close()
+         except:
+            print "Error writting output from console in log\n"
+            pass
 
-   def get_pids(self):
-      return self.pids.values()
-            
+         self.process.terminate()
+      except Exception:
+         return
+
+   def get_pid(self):
+      return str(self.pids['subprocess'])
+
+   def check_pid(self, pid):    
+      try:
+         command = str('ps -o stat ' + str(pid))
+         ps = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE)
+         data = ps.communicate()[0].split("\n")[1]
+         if "Z" in data or "T" in data:
+            return False
+         else:
+            return True
+      except:
+         return None
 if __name__ == '__main__':
    parser = argparse.ArgumentParser(description=script_description)
 
@@ -253,6 +304,4 @@ if __name__ == '__main__':
       Manual(interface=args.interface, server_ip=args.server_ip, case=args.case_number, file_name=args.file_name, location=args.location)
    else:
       Manual(case=args.case_number, file_name=args.file_name, location=args.location)
-
-
 
