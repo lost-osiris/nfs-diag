@@ -120,11 +120,11 @@ if __name__ == '__main__':
          if "error" in output[0].lower() or "error" in output[1].lower():
             print "Error updating script"
             print "Type: ", output[1]
-         elif "already up-to-date" not in output[0].lower() or "already up-to-date" not in output[1].lower():
+         elif "already up-to-date" in output[0].lower() or "already up-to-date" in output[1].lower():
+            print "!Script is already up-to-date"
+         else:
             copy = subprocess.Popen(["cp", str(orginal_path + "repo/*"), str(orginal_path + "current")], stdout=PIPE, stderr=PIPE)
             print "*** Successfully updated! ***"
-         else:
-            print "!Script is already up-to-date"
       print output[0]
       print output[1]
    elif args.auto and (args.server_ip != False or args.interface != False):
