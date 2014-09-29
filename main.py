@@ -98,6 +98,8 @@ if __name__ == '__main__':
       for i in path.split("/"):
          if "/" in i:
             full_path += i.replace("/", "")
+         elif i == "current"
+            continue
          else:
             full_path += str(i + "/")
 
