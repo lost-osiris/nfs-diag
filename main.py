@@ -94,10 +94,10 @@ if __name__ == '__main__':
    if args.update == True:
       path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-      full_path = ""
+      full_path = "/"
       for i in path.split("/"):
          if "/" in i:
-            full_path += i[1:len(i)]
+            full_path += i.replace("/", "")
          else:
             full_path += i
 
