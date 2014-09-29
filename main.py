@@ -99,7 +99,7 @@ if __name__ == '__main__':
          if "/" in i:
             full_path += i.replace("/", "")
          else:
-            full_path += i
+            full_path += str(i + "/")
 
       work_tree = full_path
       full_path += "/.git"
