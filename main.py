@@ -94,15 +94,14 @@ if __name__ == '__main__':
    if args.update == True:
       path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-      full_path = "/"
+      full_path = ""
       for i in path.split("/"):
          if "/" in i:
             full_path += i.replace("/", "")
          else:
             full_path += str(i + "/")
 
-      work_tree = full_path
-      full_path += "/.git"
+      full_path += ".git"
 
       process = subprocess.Popen(["git", str("--git-dir=" + full_path), "pull"], stdout=PIPE, stderr=PIPE)
          
