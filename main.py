@@ -116,7 +116,7 @@ if __name__ == '__main__':
       elif "error" in output[0].lower() or "error" in output[1].lower():
          print "Error updating script"
          print("Type: ", output[1])
-      elif "remote" in output[0].lower() or "remote" in output[1].lower():
+      elif "from" in output[0].lower() or "from" in output[1].lower():
          copy = subprocess.Popen(["cp", str(original_path + "repo/*"), str(original_path + "current")], stdout=PIPE, stderr=PIPE)
          print "*** Successfully updated ***"
       else:
