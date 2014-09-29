@@ -106,9 +106,7 @@ if __name__ == '__main__':
       original_path = full_path
       full_path += "repo/.git"
 
-      process = subprocess.Popen(["git", str("--git-dir=" + full_path), "fetch", "--all"], stdout=PIPE, stderr=PIPE)
-      reset = subprocess.Popen(["git", str("--git-dir=" + full_path), "reset", "----hard origin/master"], stdout=PIPE, stderr=PIPE)
-      
+      process = subprocess.Popen(["git", str("--git-dir=" + full_path), "pull"], stdout=PIPE, stderr=PIPE)
       
       output = process.communicate()
       if "permission denied" in output[0].lower() or "permission denied" in output[1].lower():
@@ -116,7 +114,7 @@ if __name__ == '__main__':
       elif "error" in output[0].lower() or "error" in output[1].lower():
          print "Error updating script"
          print "Type: ", output[1]
-      elif "from" in output[0].lower() or "from" in output[1].lower():
+      elif "already up-to-date" not in output[0].lower() or "already up-to-date" not in output[1].lower():
          copy = subprocess.Popen(["cp", str(original_path + "repo/*"), str(original_path + "current")], stdout=PIPE, stderr=PIPE)
          print "*** Successfully updated! ***"
       else:
