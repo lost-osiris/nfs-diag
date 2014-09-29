@@ -103,7 +103,8 @@ if __name__ == '__main__':
 
       full_path += ".git"
 
-      process = subprocess.Popen(["git", str("--git-dir=" + full_path), "pull"], stdout=PIPE, stderr=PIPE)
+      process = subprocess.Popen(["git", str("--git-dir=" + full_path), "fetch", "--all"], stdout=PIPE, stderr=PIPE)
+      reset = subprocess.Popen(["git", str("--git-dir=" + full_path), "reset", "----hard origin/master"], stdout=PIPE, stderr=PIPE)
          
       output = process.communicate()
       if "permissions denied" in output[0].lower() or "permissions denied" in output[1].lower():
