@@ -1,7 +1,7 @@
 from auto import Auto
 from manual import Manual
 from write_log import Logger
-import os, sys, argparse, subprocess
+import os, sys, argparse, subprocess, inspect
 
 features = '''
    1) Has an interactive mode
