@@ -118,7 +118,7 @@ if __name__ == '__main__':
          copy = subprocess.Popen(["cp", str(original_path + "repo/*"), str(original_path + "current")], stdout=PIPE, stderr=PIPE)
          print "*** 1Successfully updated ***"
       else:
-         print "Script is already up-to-date"
+         print "1Script is already up-to-date"
 
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
