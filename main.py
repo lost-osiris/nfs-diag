@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
    if args.update == True:
       path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-      process = subprocess.Popen(["git", "pull", path, "master"], stdout=PIPE, stderr=PIPE)
+      process = subprocess.Popen(["git", "pull", str(path + "/"), "master"], stdout=PIPE, stderr=PIPE)
          
       output = process.communicate()
       if "permissions denied" in output[0].lower() or "permissions denied" in output[1].lower():
@@ -102,7 +102,7 @@ if __name__ == '__main__':
          print "Error updating script"
          print ("Type: ", output[1])
       elif "already up-to-date" in output[0].lower() or "already up-to-date" in output[1].lower():
-         print "1Script is already up-to-date"
+         print "Script is already up-to-date"
       else:
          print "*** Successfully updated ***"
    elif args.auto and (args.server_ip != False or args.interface != False):
