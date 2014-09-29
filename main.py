@@ -112,7 +112,7 @@ if __name__ == '__main__':
       elif "error" in output[0].lower() or "error" in output[1].lower():
          print "Error updating script"
          print("Type: ", output[1])
-      elif "already up-to-date" in output[0].lower() or "already up-to-date" in output[1].lower():
+      elif "remote" not in output[0].lower() or "already up-to-date" not in output[1].lower():
          print "Script is already up-to-date"
       else:
          print "*** Successfully updated ***"
