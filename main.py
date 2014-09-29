@@ -116,7 +116,7 @@ if __name__ == '__main__':
          print "Script is already up-to-date"
       else:
          print "*** 1Successfully updated ***"
-      print ouput
+      print output
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
    elif args.auto:
