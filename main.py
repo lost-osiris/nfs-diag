@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
    if args.update == True:
       path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-      process = subprocess.Popen(["git", "pull", str(path + "/"), "master"], stdout=PIPE, stderr=PIPE)
+      process = subprocess.Popen(["git", "--git-dir", str(path + "/.git"), "pull", "master"], stdout=PIPE, stderr=PIPE)
          
       output = process.communicate()
       if "permissions denied" in output[0].lower() or "permissions denied" in output[1].lower():
