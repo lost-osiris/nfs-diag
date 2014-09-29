@@ -111,18 +111,17 @@ if __name__ == '__main__':
       
       
       output = process.communicate()
-      if "permissions denied" in output[0].lower() or "permissions denied" in output[1].lower():
+      if "permission denied" in output[0].lower() or "permission denied" in output[1].lower():
          print "You do not have permissions to update script. Run script with sudo permissions"
       elif "error" in output[0].lower() or "error" in output[1].lower():
          print "Error updating script"
-         print("Type: ", output[1])
+         print "Type: ", output[1]
       elif "from" in output[0].lower() or "from" in output[1].lower():
          copy = subprocess.Popen(["cp", str(original_path + "repo/*"), str(original_path + "current")], stdout=PIPE, stderr=PIPE)
          print "*** Successfully updated! ***"
       else:
          print "Script is already up-to-date"
-      print output[0]
-      print output[1]
+
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
    elif args.auto:
