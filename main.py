@@ -92,7 +92,8 @@ if __name__ == '__main__':
    args = parser.parse_args()
 
    if args.update == True:
-      process = subprocess.Popen(["git", "pull"], stdout=PIPE, stderr=PIPE)
+      path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+      process = subprocess.Popen(["git", "pull", path], stdout=PIPE, stderr=PIPE)
       print process.communicate()
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
