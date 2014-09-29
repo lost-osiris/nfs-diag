@@ -103,7 +103,7 @@ if __name__ == '__main__':
          else:
             full_path += str(i + "/")
 
-      original_path = full_path
+      orginal_path = full_path
       full_path += "repo/.git"
 
       process = subprocess.Popen(["git", str("--git-dir=" + full_path), "pull"], stdout=PIPE, stderr=PIPE)
@@ -111,14 +111,20 @@ if __name__ == '__main__':
       output = process.communicate()
       if "permission denied" in output[0].lower() or "permission denied" in output[1].lower():
          print "You do not have permissions to update script. Run script with sudo permissions"
-      elif "error" in output[0].lower() or "error" in output[1].lower():
-         print "Error updating script"
-         print "Type: ", output[1]
-      elif "already up-to-date" not in output[0].lower() or "already up-to-date" not in output[1].lower():
-         copy = subprocess.Popen(["cp", str(original_path + "repo/*"), str(original_path + "current")], stdout=PIPE, stderr=PIPE)
-         print "*** Successfully updated! ***"
       else:
-         print "Script is already up-to-date"
+         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyc"), ], stdout=PIPE, stderr=PIPE)
+         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyo"), ], stdout=PIPE, stderr=PIPE)
+         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyc"), ], stdout=PIPE, stderr=PIPE)
+         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyo"), ], stdout=PIPE, stderr=PIPE)
+
+         if "error" in output[0].lower() or "error" in output[1].lower():
+            print "Error updating script"
+            print "Type: ", output[1]
+         elif "already up-to-date" not in output[0].lower() or "already up-to-date" not in output[1].lower():
+            copy = subprocess.Popen(["cp", str(orginal_path + "repo/*"), str(original_path + "current")], stdout=PIPE, stderr=PIPE)
+            print "*** Successfully updated! ***"
+         else:
+            print "Script is already up-to-date"
 
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
