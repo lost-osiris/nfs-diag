@@ -111,7 +111,7 @@ if __name__ == '__main__':
          print "You do not have permissions to update script. Run script with sudo permissions"
       elif "error" in output[0].lower() or "error" in output[1].lower():
          print "Error updating script"
-         print ("Type: ", output[1])
+         print("Type: ", output[1])
       elif "already up-to-date" in output[0].lower() or "already up-to-date" in output[1].lower():
          print "Script is already up-to-date"
       else:
