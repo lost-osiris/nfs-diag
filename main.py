@@ -101,11 +101,13 @@ if __name__ == '__main__':
          else:
             full_path += str(i + "/")
 
-      full_path += ".git"
+      original_path = full_path
+      full_path += "repo/.git"
 
       process = subprocess.Popen(["git", str("--git-dir=" + full_path), "fetch", "--all"], stdout=PIPE, stderr=PIPE)
       reset = subprocess.Popen(["git", str("--git-dir=" + full_path), "reset", "----hard origin/master"], stdout=PIPE, stderr=PIPE)
-         
+      
+      
       output = process.communicate()
       if "permissions denied" in output[0].lower() or "permissions denied" in output[1].lower():
          print "You do not have permissions to update script. Run script with sudo permissions"
@@ -115,6 +117,7 @@ if __name__ == '__main__':
       elif "remote" not in output[0].lower() or "remote" not in output[1].lower():
          print "Script is already up-to-date"
       else:
+         copy = subprocess.Popen(["cp", str(original_path + "repo/*"), str(original_path + "current")], stdout=PIPE, stderr=PIPE)
          print "*** Successfully updated ***"
 
    elif args.auto and (args.server_ip != False or args.interface != False):
