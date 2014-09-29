@@ -94,7 +94,17 @@ if __name__ == '__main__':
    if args.update == True:
       path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
       process = subprocess.Popen(["git", "pull", path, "master"], stdout=PIPE, stderr=PIPE)
-      print process.communicate()
+         
+      output = process.communicate()
+      if "permissions denied" in output[0].lower() or "permissions denied" in output[1].lower():
+         print "You do not have permissions to update script. Run script with sudo permissions"
+      elif "error" in output[0].lower() or "error" in output[1].lower():
+         print "Error updating script"
+         print ("Type: ", output[1])
+      elif "already up-to-date" in output[0].lower() or "already up-to-date" in output[1].lower():
+         print "Script is already up-to-date"
+      else:
+         print "*** Successfully updated ***"
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
    elif args.auto:
