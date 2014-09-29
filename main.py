@@ -93,9 +93,8 @@ if __name__ == '__main__':
 
    if args.update == True:
       path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-      print path
-      #process = subprocess.Popen(["git", "pull", path], stdout=PIPE, stderr=PIPE)
-      #print process.communicate()
+      process = subprocess.Popen(["git", "pull", path, "master"], stdout=PIPE, stderr=PIPE)
+      print process.communicate()
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
    elif args.auto:
