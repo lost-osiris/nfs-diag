@@ -19,24 +19,26 @@ class Update(object):
       self.full_path += "repo/.git"
 
    def update(self):
-         blah = self.check_update()
-         print blah
+         check_update = self.check_update()
+         message = ""
+         updated = False
+         if check_update == True:
+            process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "pull"], stdout=PIPE, stderr=PIPE)
+            print process.communicate()
+            rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyc"), ], stdout=PIPE, stderr=PIPE)
+            rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyo"), ], stdout=PIPE, stderr=PIPE)
+            rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyc"), ], stdout=PIPE, stderr=PIPE)
+            rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyo"), ], stdout=PIPE, stderr=PIPE)
 
-         '''   
-         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyc"), ], stdout=PIPE, stderr=PIPE)
-         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyo"), ], stdout=PIPE, stderr=PIPE)
-         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyc"), ], stdout=PIPE, stderr=PIPE)
-         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyo"), ], stdout=PIPE, stderr=PIPE)
-
-         if "error" in output[0].lower() or "error" in output[1].lower():
-            print "Type: ", output[1]
-         elif "up-to-date" in str(output[0]) or "up-to-date" in str(output[1]):
-            self._set_error("already up-to-date")
-            return False
-         else:
             copy = subprocess.Popen(["cp", str(orginal_path + "repo/*"), str(orginal_path + "current")], stdout=PIPE, stderr=PIPE)
-            return True
-         '''
+             
+         elif self.error == "":
+            message = "Already up-to-date"
+         else:
+            message = self.get_error
+
+         return updated, message
+
    def check_update(self):
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "remote", "update"], stdout=PIPE, stderr=PIPE)
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "status", "-uno"], stdout=PIPE, stderr=PIPE)
@@ -48,7 +50,6 @@ class Update(object):
          for i in output[0].split("\n"):
             if "#" in i and "behind" in i:
                update = True
-      print output
       return update
 
    def _set_error(self, message):
