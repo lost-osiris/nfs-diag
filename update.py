@@ -51,7 +51,7 @@ class Update(object):
 
    def check_update(self):
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "remote", "update"], stdout=PIPE, stderr=PIPE)
-      time.sleep(5)
+      time.sleep(0.5)
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "status", "-uno"], stdout=PIPE, stderr=PIPE)
       output = process.communicate()
       update = False
