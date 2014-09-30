@@ -5,7 +5,6 @@ class Update(object):
 
    def __init__(self):
       path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-
       self.full_path = ""
       for i in path.split("/"):
          if "/" in i:
@@ -17,6 +16,7 @@ class Update(object):
 
       self.orginal_path = self.full_path
       self.full_path += "repo/.git"
+      self.error = ""
 
    def update(self):
          check_update = self.check_update()
