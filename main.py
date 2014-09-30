@@ -87,15 +87,14 @@ if __name__ == '__main__':
    parser.add_argument('-i', '--interface', help=dest, nargs=1, type=str, default=False)
 
    dest = '''
-     asdfUpdates the script.
+     Updates the script.
    '''
    parser.add_argument('-u', '--update', help=dest, action="store_true", default=False)
    args = parser.parse_args()
 
    if args.update == True:
       update, message = Update().update()
-      print update, message
-
+      print message
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
    elif args.auto:
