@@ -19,12 +19,10 @@ class Update(object):
       self.full_path += "repo/.git"
 
    def update(self):
-      process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "pull"], stdout=PIPE, stderr=PIPE)
+         blah = self.check_update()
+         print blah
 
-      output = process.communicate()
-      if "permission denied" in output[0].lower() or "permission denied" in output[1].lower():
-         return "permission denied"
-      else:
+         '''   
          rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyc"), ], stdout=PIPE, stderr=PIPE)
          rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyo"), ], stdout=PIPE, stderr=PIPE)
          rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyc"), ], stdout=PIPE, stderr=PIPE)
@@ -38,9 +36,18 @@ class Update(object):
          else:
             copy = subprocess.Popen(["cp", str(orginal_path + "repo/*"), str(orginal_path + "current")], stdout=PIPE, stderr=PIPE)
             return True
+         '''
    def check_update(self):
+      subprocess.Popen(["git", str("--git-dir=" + self.full_path), "remote", "update"], stdout=PIPE, stderr=PIPE)
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "status", "-uno"], stdout=PIPE, stderr=PIPE)
-      print process.communicate()
+      output = process.communicate()[0]
+      update = False
+      for i in output:
+         if "#" in i and "behind" in i:
+            update = True
+      print output
+      return update
+
    def _set_error(self, message):
       self.error = message
 
