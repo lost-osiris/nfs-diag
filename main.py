@@ -4,23 +4,23 @@ from write_log import Logger
 import os, sys, argparse, subprocess, inspect
 
 features = '''
-   1) Has an interactive mode
-   2) Auto mode runs tcpdump on all server mounts
-   3) RPM is available for script
-   4) Check to see if server specified is a NFS mounted server
-   5) Detects if tcpdump is running if not it kills script
-      will only kill the script if ALL of the tcpdumps that are running are closed
-   6) Tests the server that tcpdump is trying to run on to make sure the client can reach the server
-   !) Archives all the files that script outputs
-   8) Detects if current user has permissions to interface
-   !) Checks logs and determines if NFS server timed out in a certian amount of time
-   !) Updates automatically
-   $) Validate user input  
-      $  a. Any path specified
-         b. Any Ip's
-      !  c. Case number
-      !  d. Interface
-   !) Lists all data on current NFS servers
+    1) Interactive mode allows users to select which nfs server to run tcpdump
+    2) Auto mode runs tcpdump on all server mounts
+    3) RPM is available for script
+    4) Check to see if server specified is a NFS mounted server
+    5) Detects if tcpdump is running if not it kills script
+       will only kill the script if ALL of the tcpdumps that are running are closed
+    6) Tests the server that tcpdump is trying to run on to make sure the client can reach the server
+    !) Archives all the files that script outputs
+    8) Detects if current user has permissions to interface
+    !) Checks logs and determines if NFS server timed out in a certian amount of time
+   10) Allows users to get latest version of script
+    $) Validate user input  
+       $  a. Any path specified
+          b. Any Ip's
+       !  c. Interface
+    !) Lists all data on current NFS servers
+    !) Analys tcpdump after it has stopped. Output a report. 
 '''
 
 script_description = '''
@@ -125,6 +125,7 @@ if __name__ == '__main__':
          else:
             copy = subprocess.Popen(["cp", str(orginal_path + "repo/*"), str(orginal_path + "current")], stdout=PIPE, stderr=PIPE)
             print "*** Successfully updated! ***"
+
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
    elif args.auto:
