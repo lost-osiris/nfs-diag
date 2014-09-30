@@ -28,18 +28,11 @@ class Update(object):
             subprocess.Popen(["git", str("--git-dir=" + self.full_path), "rebase", "origin/master"], stdout=PIPE, stderr=PIPE)
             print process.communicate()
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "current/*.pyc"), ], stdout=PIPE, stderr=PIPE)
-            print rm.communicate()
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "current/*.pyo"), ], stdout=PIPE, stderr=PIPE)
-            print rm.communicate()
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "repo/*.pyc"), ], stdout=PIPE, stderr=PIPE)
-            print rm.communicate()
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "repo/*.pyo"), ], stdout=PIPE, stderr=PIPE)
-            print rm.communicate()
 
-            copy = subprocess.Popen(["ls", str(self.orginal_path + "repo/")], stdout=PIPE, stderr=PIPE)
-            print copy.communicate()
             copy = subprocess.Popen(str("cp " + str(self.orginal_path + "repo/* ") + str(self.orginal_path + "current")), stdout=PIPE, stderr=PIPE, shell=True)
-            print copy.communicate()
 
             message = "*** Sucessfully Updated ***" 
             updated = True
