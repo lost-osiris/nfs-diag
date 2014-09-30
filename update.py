@@ -48,7 +48,7 @@ class Update(object):
          for i in output[0]:
             if "#" in i and "behind" in i:
                update = True
-
+      print output
       return update
 
    def _set_error(self, message):
