@@ -40,9 +40,9 @@ class Update(object):
    def check_update(self):
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "remote", "update"], stdout=PIPE, stderr=PIPE)
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "status", "-uno"], stdout=PIPE, stderr=PIPE)
-      output = process.communicate()[0]
+      output = process.communicate()
       update = False
-      for i in output:
+      for i in output[0]:
          if "#" in i and "behind" in i:
             update = True
       print output
