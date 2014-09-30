@@ -23,7 +23,7 @@ class Update(object):
          message = ""
          updated = False
          if check_update == True:
-            process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "pull"], stdout=PIPE, stderr=PIPE)
+            process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "pull", "--rebase"], stdout=PIPE, stderr=PIPE)
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "current/*.pyc"), ], stdout=PIPE, stderr=PIPE)
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "current/*.pyo"), ], stdout=PIPE, stderr=PIPE)
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "repo/*.pyc"), ], stdout=PIPE, stderr=PIPE)
