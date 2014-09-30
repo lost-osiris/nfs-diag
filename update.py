@@ -4,7 +4,7 @@ PIPE = subprocess.PIPE
 class Update(object):
 
    def __init__(self):
-      self.path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+      path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
       self.full_path = ""
       for i in path.split("/"):
