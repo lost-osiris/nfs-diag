@@ -36,6 +36,8 @@ class Update(object):
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "repo/*.pyo"), ], stdout=PIPE, stderr=PIPE)
             print rm.communicate()
 
+            copy = subprocess.Popen(["ls", str(self.orginal_path + "repo/")], stdout=PIPE, stderr=PIPE)
+            print copy.communicate()
             copy = subprocess.Popen(["cp", str(self.orginal_path + "repo/*.py"), str(self.orginal_path + "current")], stdout=PIPE, stderr=PIPE)
             print copy.communicate()
 
@@ -51,7 +53,7 @@ class Update(object):
 
    def check_update(self):
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "remote", "update"], stdout=PIPE, stderr=PIPE)
-      time.sleep(0.5)
+      time.sleep(1)
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "status", "-uno"], stdout=PIPE, stderr=PIPE)
       output = process.communicate()
       update = False
