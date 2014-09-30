@@ -1,5 +1,6 @@
 from auto import Auto
 from manual import Manual
+from update import Update
 from write_log import Logger
 import os, sys, argparse, subprocess, inspect
 
@@ -92,40 +93,7 @@ if __name__ == '__main__':
    args = parser.parse_args()
 
    if args.update == True:
-      path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-
-      full_path = ""
-      for i in path.split("/"):
-         if "/" in i:
-            full_path += i.replace("/", "")
-         elif i == "current":
-            continue
-         else:
-            full_path += str(i + "/")
-
-      orginal_path = full_path
-      full_path += "repo/.git"
-
-      process = subprocess.Popen(["git", str("--git-dir=" + full_path), "pull"], stdout=PIPE, stderr=PIPE)
-      
-      output = process.communicate()
-      if "permission denied" in output[0].lower() or "permission denied" in output[1].lower():
-         print "You do not have permissions to update script. Run script with sudo permissions"
-      else:
-         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyc"), ], stdout=PIPE, stderr=PIPE)
-         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "current/*.pyo"), ], stdout=PIPE, stderr=PIPE)
-         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyc"), ], stdout=PIPE, stderr=PIPE)
-         rm = subprocess.Popen(["rm", "-f", str(orginal_path + "repo/*.pyo"), ], stdout=PIPE, stderr=PIPE)
-
-         if "error" in output[0].lower() or "error" in output[1].lower():
-            print "Error updating script"
-            print "Type: ", output[1]
-         elif "up-to-date" in str(output[0]) or "up-to-date" in str(output[1]):
-            print "Script is already up-to-date"
-         else:
-            copy = subprocess.Popen(["cp", str(orginal_path + "repo/*"), str(orginal_path + "current")], stdout=PIPE, stderr=PIPE)
-            print "*** Successfully updated! ***"
-
+      Update().check_update()
    elif args.auto and (args.server_ip != False or args.interface != False):
       print ("Can't run Manual mode and Auto mode at the same time")
    elif args.auto:
