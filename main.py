@@ -87,7 +87,7 @@ if __name__ == '__main__':
    parser.add_argument('-i', '--interface', help=dest, nargs=1, type=str, default=False)
 
    dest = '''
-      asdfsdfUpdates the script.
+      Updates the script.
    '''
    parser.add_argument('-u', '--update', help=dest, action="store_true", default=False)
    args = parser.parse_args()
