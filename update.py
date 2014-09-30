@@ -1,4 +1,4 @@
-import os, sys, subprocess
+import os, sys, subprocess, inspect
 
 PIPE = subprocess.PIPE
 class Update(object):
