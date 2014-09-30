@@ -1,19 +1,15 @@
-import os, sys, time, multiprocessing
+import os, sys, time, multiprocessing, subprocess
 
 class LogWatcher:
-   def __init__(self, location=None, messages=None):
-      self.default_messages = ["timed out", "not responding"]
-
-      if messages != None:
-         messages = message.split(",")
-         for i in messages:
-            self.default_messages.append(i)
-      
-      if location == None:
-         self.location = ["/var/log/messages"]
-
+   def __init__(self, location, messages, pids, obj):
+      if type(location) == str:
+         self.location = [location]
       else:
-         self.location = location.split(",")
+         self.location = location
+
+      self.messages = messages
+      self.pids = pids
+      self.obj = obj
 
       pool = []
       for i in self.location:
@@ -23,16 +19,12 @@ class LogWatcher:
 
       done = True
       while done:
-         count = 0
 
          for i in pool:
             if i.is_alive() == False:
-               count += 1
-
-            if count == len(pool):
                done = False
 
-      print "finished"
+      subprocess.Popen(str("kill" + " -9 " + str(self.pids)), shell=True)
          
    def watch(self, location):
       target = open(location)
@@ -45,8 +37,10 @@ class LogWatcher:
          else:
             current_time = time.strftime("%H:%M")
             current_date = time.strftime("%b %d")
-            for i in self.default_messages:
+            for i in self.messages:
+               for j in range(-5, 5):
                if i in line and current_time in line and current_date in line:
+                  self.obj.logger.log(str("\nFound message \"" + i + "\" in " + location + "\nKilling tcpdump"))
                   return
             
 if __name__ == "__main__":

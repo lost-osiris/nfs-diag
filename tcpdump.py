@@ -1,4 +1,5 @@
-from multiprocessing import Process 
+from multiprocessing import Process
+from log_watcher import LogWatcher 
 import os, sys, time, select, subprocess
 
 PIPE = subprocess.PIPE
@@ -46,7 +47,8 @@ class TcpDump(object):
 
    def check_tcpdump(self):
       if self.obj.check_log == True:
-         pass
+         process = Process(target=LogWatcher, args=(self.obj.log_files, self.obj.messages, self.pids['subprocess'], self.obj))
+         process.start()
 
       while True:
          check = self.check_pid(self.pids['subprocess'])

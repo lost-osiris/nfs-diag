@@ -20,6 +20,8 @@ features = '''
        $  a. Any path specified
           b. Any Ip's
        !  c. Interface
+       !  d. Message file
+       !  e. Log location
     !) Lists all data on current NFS servers
     !) Analys tcpdump after it has stopped. Output a report. 
 '''
@@ -69,10 +71,10 @@ if __name__ == '__main__':
    dest = '''
       Check logs for messages. Will use default logs and messages if they aren't specified.
    '''
-   parser.add_argument("-C", "--check_log", help=dest, type=str, default=False)
+   parser.add_argument("-C", "--check_log", help=dest, action="store_true", default=False)
 
    dest = '''
-      A .csv file can be specified to check log files with a set of strings.
+      A file seperated by a line feed for each message can be specified to check log files with a set of strings.
    '''
    messages = ["timed, out", "not responding"] 
    parser.add_argument("-m", "--messages", help=dest, nargs="?", type=str, default=messages)
@@ -91,7 +93,6 @@ if __name__ == '__main__':
    '''
    parser.add_argument('-u', '--update', help=dest, action="store_true", default=False)
    args = parser.parse_args()
-
    if args.update == True:
       update, message = Update().update()
       print message
