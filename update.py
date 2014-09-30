@@ -45,7 +45,7 @@ class Update(object):
       if output[1] != '':
          self._set_error(output[1])
       else:
-         for i in output[0]:
+         for i in output[0].split("\n"):
             if "#" in i and "behind" in i:
                update = True
       print output
