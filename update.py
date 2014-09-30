@@ -30,7 +30,7 @@ class Update(object):
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "repo/*.pyc"), ], stdout=PIPE, stderr=PIPE)
             rm = subprocess.Popen(["rm", "-f", str(self.orginal_path + "repo/*.pyo"), ], stdout=PIPE, stderr=PIPE)
 
-            copy = subprocess.Popen(["cp", str(self.orginal_path + "repo/*"), str(self.orginal_path + "current")], stdout=PIPE, stderr=PIPE)
+            copy = subprocess.Popen(["cp", str(self.orginal_path + "repo/*"), str(self.orginal_path + "current/")], stdout=PIPE, stderr=PIPE)
 
             message = "*** Sucessfully Updated ***" 
             updated = True
