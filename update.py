@@ -42,10 +42,13 @@ class Update(object):
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "status", "-uno"], stdout=PIPE, stderr=PIPE)
       output = process.communicate()
       update = False
-      for i in output[0]:
-         if "#" in i and "behind" in i:
-            update = True
-      print output
+      if output[1] != '':
+         self._set_error(output[1])
+      else:
+         for i in output[0]:
+            if "#" in i and "behind" in i:
+               update = True
+
       return update
 
    def _set_error(self, message):
