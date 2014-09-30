@@ -49,6 +49,7 @@ class Update(object):
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "status", "-uno"], stdout=PIPE, stderr=PIPE)
       output = process.communicate()
       update = False
+      print output
       if "error" in output[0]:
          self._set_error(output[0])
       else:
