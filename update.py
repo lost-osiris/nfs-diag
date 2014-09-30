@@ -13,7 +13,7 @@ class Update(object):
          elif i == "current":
             continue
          else:
-            full_path += str(i + "/")
+            self.full_path += str(i + "/")
 
       self.orginal_path = self.full_path
       self.full_path += "repo/.git"
@@ -40,7 +40,7 @@ class Update(object):
             return True
    def check_update(self):
       process = subprocess.Popen(["git", str("--git-dir=" + self.full_path), "status", "-uno"], stdout=PIPE, stderr=PIPE)
-      print self.process.communicate()
+      print process.communicate()
    def _set_error(self, message):
       self.error = message
 
