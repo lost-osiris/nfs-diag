@@ -54,7 +54,7 @@ class Auto(object):
          sys.exit()
 
    def find_ip(self):
-      output = subprocess.Popen(['cat', '/proc/mounts'], stdout=PIPE)
+      output = subprocess.Popen(str('cat /proc/mounts'), shell=True, stdout=PIPE)
       output = output.communicate()[0]
       
       results = output.split("\n")
@@ -81,7 +81,7 @@ class Auto(object):
          return None
 
    def find_interface(self, ip):
-      output = subprocess.Popen(['ip', 'route', 'get', ip], stdout=PIPE)
+      output = subprocess.Popen(str('ip route get ' + ip), stdout=PIPE)
       output = output.communicate()[0]
       
       results = output.split(" ")
