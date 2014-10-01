@@ -41,6 +41,3 @@ class LogWatcher:
                if i in line and current_time in line and current_date in line:
                   self.obj.logger.log(str("\nFound message \"" + i + "\" in " + location + "\nKilling tcpdump"))
                   return
-            
-if __name__ == "__main__":
-   LogWatcher() 

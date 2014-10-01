@@ -1,9 +1,10 @@
 #!/bin/bash
-script="#!/bin/bash"
 echo -e "\n\n$1\n\n"
 new_path=$(echo $1 | sed s/".*BUILDROOT"/''/g)
 new_path=$(echo $new_path | sed s,"^.*/{1}",'/',g)
 echo $new_path
-script="$script \npython $(echo -e $new_path)main.py \$@"
+
+script="$script \nsh $(echo -e $new_pat)nfs-diag-main.sh -p $new_path \$@"
+
 touch $2$1nfs-diag
 echo -e $script > "$2$1nfs-diag"
