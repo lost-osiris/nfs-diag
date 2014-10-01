@@ -17,15 +17,19 @@ class LogWatcher:
          pool.append(j)
          j.start()
 
-      done = True
-      while done:
+      try:
+         done = True
+         while done:
 
-         for i in pool:
-            if i.is_alive() == False:
-               done = False
+            for i in pool:
+               if i.is_alive() == False:
+                  done = False
 
-      subprocess.Popen(str("kill" + " -9 " + str(self.pids)), shell=True)
+         subprocess.Popen(str("kill" + " -9 " + str(self.pids)), shell=True)
          
+      except KeyboardInterrupt:
+         pass
+
    def watch(self, location):
       try:
          target = open(location)
@@ -41,11 +45,11 @@ class LogWatcher:
                for i in self.messages:
                   self.obj.logger.log(i)
                   self.obj.logger.log(line)
-                  print i in line
+                  print str(i) in str(line)
                   print current_time
-                  print current_time in line
+                  print str(current_time) in str(line)
                   print current_date
-                  print current_date in line
+                  print str(current_date) in str(line)
                   
                   if i in line and current_time in line and current_date in line:
                      self.obj.logger.log(str("\nFound message \"" + i + "\" in " + location + "\nKilling tcpdump"))
