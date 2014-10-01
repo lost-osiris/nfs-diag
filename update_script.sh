@@ -6,6 +6,7 @@ rm -f $(echo -e $1)current/*.pyo
 rm -f $(echo -e $1)current/*.pyc
 rm -f $(echo -e $1)repo/*.pyo
 rm -f $(echo -e $1)repo/*.pyc
+echo "blah"
 if [[ "$(echo -e $remote_status | grep "behind")" != "" ]]; then
    git --git-dir=$repo fetch --all --force
    git --git-dir=$repo reset --hard
