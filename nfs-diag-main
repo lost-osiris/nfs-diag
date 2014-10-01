@@ -26,7 +26,7 @@ if [ "$ARG" != "" ]; then
       new_path="$(echo -e $path)/current/update_script.sh"
       sh $new_path $path
    else
-      new_path="$(echo -e $path)main.py $all_args"
+      new_path="$(echo -e $path)current/main.py $all_args"
       python $new_path $all_args
    fi
    
