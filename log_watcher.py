@@ -27,19 +27,28 @@ class LogWatcher:
       subprocess.Popen(str("kill" + " -9 " + str(self.pids)), shell=True)
          
    def watch(self, location):
-      target = open(location)
-      while 1:
-         where = target.tell()
-         line = target.readline()
-         if not line:
-            time.sleep(1)
-            target.seek(where)
-         else:
-            current_time = time.strftime("%H:%M")
-            current_date = time.strftime("%b %d")
-            for i in self.messages:
-               self.obj.logger.log(i)
-               self.obj.logger.log(line)
-               if i in line and current_time in line and current_date in line:
-                  self.obj.logger.log(str("\nFound message \"" + i + "\" in " + location + "\nKilling tcpdump"))
-                  return
+      try:
+         target = open(location)
+         while 1:
+            where = target.tell()
+            line = target.readline()
+            if not line:
+               time.sleep(1)
+               target.seek(where)
+            else:
+               current_time = time.strftime("%H:%M")
+               current_date = time.strftime("%b %d")
+               for i in self.messages:
+                  self.obj.logger.log(i)
+                  self.obj.logger.log(line)
+                  print i in line
+                  print current_time
+                  print current_time in line
+                  print current_date
+                  print current_date in line
+                  
+                  if i in line and current_time in line and current_date in line:
+                     self.obj.logger.log(str("\nFound message \"" + i + "\" in " + location + "\nKilling tcpdump"))
+                     return
+      except KeyboardInterrupt:
+         return
