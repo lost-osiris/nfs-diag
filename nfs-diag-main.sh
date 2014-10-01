@@ -1,4 +1,3 @@
-#!/bin/bash
 ARG=($@)
 PATH=false
 UPDATE=false
@@ -24,10 +23,10 @@ if [ "$ARG" != "" ]; then
    done
    if [[ $UPDATE == true ]]; then
       new_path="$(echo -e $path)update_script.sh"
-      $new_path $path
+      sh $new_path $path
    else
-      new_path="/usr/bin/python $(echo -e $path)main.py $all_args"
-      $new_path
+      new_path="$(echo -e $path)main.py $all_args"
+      python $new_path
    fi
    
 fi
