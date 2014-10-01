@@ -11,7 +11,9 @@ if [[ "$(echo -e $remote_status | grep "behind")" != "" ]]; then
    git --git-dir=$1 fetch --all --force
    git --git-dir=$1 reset --hard
    git --git-dir=$1 rebase origin/master
-   cp $(echo -e $1)repo/* $(echo -e $1)current/
+   src="$(echo -e $1)repo/*"
+   dest="$(echo -e $1)current/"
+   cp $src $dest
 else
    echo -e "Already up-to-date"
 fi   
