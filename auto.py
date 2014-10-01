@@ -54,10 +54,8 @@ class Auto(object):
          sys.exit()
 
    def find_ip(self):
-      output = subprocess.Popen(str('cat /proc/mounts'), shell=True, stdout=PIPE)
-      output = output.communicate()[0]
-      
-      results = output.split("\n")
+      output = subprocess.Popen(str('cat ' + "/proc/mounts"),shell=True, stdout=PIPE, stderr=PIPE)
+      results = output.communicate()[0].split("\n")
       regex = re.compile('^(?P<server_ip>^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))\:(?P<server_mount>.+?)\s(?P<client_mount>.+?)\s(?P<version>.+?)\s(?P<options>.+)$')
    
       ip = []
@@ -81,7 +79,7 @@ class Auto(object):
          return None
 
    def find_interface(self, ip):
-      output = subprocess.Popen(str('ip route get ' + ip), stdout=PIPE)
+      output = subprocess.Popen(str('ip route get ' + ip),shell=True, stdout=PIPE)
       output = output.communicate()[0]
       
       results = output.split(" ")

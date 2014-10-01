@@ -1,5 +1,6 @@
+#!/bin/bash
+
 ARG=($@)
-PATH=false
 UPDATE=false
 path=""
 all_args=""
@@ -26,7 +27,7 @@ if [ "$ARG" != "" ]; then
       sh $new_path $path
    else
       new_path="$(echo -e $path)main.py $all_args"
-      python $new_path
+      python main.py $all_args
    fi
    
 fi
