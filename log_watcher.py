@@ -10,7 +10,7 @@ class LogWatcher:
       self.messages = messages
       self.pids = pids
       self.obj = obj
-
+      print self.messages
       pool = []
       for i in self.location:
          j = multiprocessing.Process(target=self.watch, args=(i,))
