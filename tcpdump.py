@@ -49,7 +49,7 @@ class TcpDump(object):
       if self.obj.check_log == True:
          process = Process(target=LogWatcher, args=(self.obj.log_files, self.obj.messages, self.pids['subprocess'], self.obj))
          process.start()
-
+         print "blah"
       while True:
          check = self.check_pid(self.pids['subprocess'])
          if check == True:
