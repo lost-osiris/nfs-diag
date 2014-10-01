@@ -23,7 +23,8 @@ if [ "$ARG" != "" ]; then
       esac
    done
    if [[ $UPDATE == true ]]; then
-      sh $(echo -e $path)update_script.sh $path
+      new_path="$(echo -e $path)update.sh"
+      sh $new_path $path
    else
       python $(echo -e $path)main.py $all_args
    fi
