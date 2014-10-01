@@ -27,7 +27,7 @@ if [ "$ARG" != "" ]; then
       sh $new_path $path
    else
       new_path="$(echo -e $path)main.py $all_args"
-      python main.py $all_args
+      python $new_path $all_args
    fi
    
 fi
