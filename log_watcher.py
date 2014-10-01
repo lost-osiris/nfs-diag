@@ -43,6 +43,7 @@ class LogWatcher:
                current_month = time.strftime("%b")
                current_day = str(int(time.strftime("%d")))
                current_date = str(current_month + " " + current_day)
+               print current_date
                for i in self.messages:
                   
                   if i in line and current_time in line and current_date in line:
