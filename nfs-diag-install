@@ -4,7 +4,7 @@ new_path=$(echo $1 | sed s/".*BUILDROOT"/''/g)
 new_path=$(echo $new_path | sed s,"^.*/{1}",'/',g)
 echo $new_path
 
-script="sh $(echo -e $new_path)nfs-diag-main -p $new_path \$@"
+script="sh $(echo -e $new_path)nfs-diag-main -p $3 \$@"
 
 touch $2$1nfs-diag
 echo -e $script > "$2$1nfs-diag"
