@@ -40,7 +40,9 @@ class LogWatcher:
                target.seek(where)
             else:
                current_time = time.strftime("%H:%M")
-               current_date = time.strftime("%b %d")
+               current_month = time.strftime("%b")
+               current_day = str(int(time.strftime("%d")))
+               current_date = str(current_month + " " + current_day)
                for i in self.messages:
                   
                   if i in line and current_time in line and current_date in line:
