@@ -10,7 +10,7 @@ rm -f $(echo -e $1)repo/*.pyc
 if [[ "$(echo -e $remote_status | grep "behind")" != "" ]]; then
    rm -f $(echo -e $1)repo/*
    rm -rf $(echo -e $1)repo/.git
-   git clone https://github.com/lost-osiris/nfs-diag.git $1/repo &
+   git clone https://github.com/lost-osiris/nfs-diag.git $1/repo &> /dev/null
    #git --git-dir=$repo fetch --all --force
    #git --git-dir=$repo reset --hard
    #git --git-dir=$repo rebase origin/master
