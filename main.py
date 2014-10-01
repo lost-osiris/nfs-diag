@@ -1,4 +1,3 @@
-#!/usr/bin/Python
 from auto import Auto
 from manual import Manual
 from update import Update
