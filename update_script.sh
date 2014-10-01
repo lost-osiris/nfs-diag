@@ -1,9 +1,9 @@
 #!/bin/bash
 
-remote=$(git --git-dir=$1 remote update)
+remote=$(git --git-dir=$1 remote update > /dev/null)
 remote_status=$(git --git-dir=$1 status -uno)
 
-rm -f $(echo-e $1)current/*.pyo
+rm -f $(echo -e $1)current/*.pyo
 rm -f $(echo -e $1)current/*.pyc
 rm -f $(echo -e $1)repo/*.pyo
 rm -f $(echo -e $1)repo/*.pyc
