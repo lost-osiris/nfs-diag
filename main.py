@@ -3,6 +3,7 @@ from manual import Manual
 from update import Update
 from write_log import Logger
 import os, sys, argparse, subprocess, inspect
+print "blah"
 features = '''
     1) Interactive mode allows users to select which nfs server to run tcpdump
     2) Auto mode runs tcpdump on all server mounts
