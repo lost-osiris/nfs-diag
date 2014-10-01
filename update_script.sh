@@ -8,7 +8,8 @@ rm -f $(echo -e $1)repo/*.pyo
 rm -f $(echo -e $1)repo/*.pyc
 echo "blah"
 if [[ "$(echo -e $remote_status | grep "behind")" != "" ]]; then
-   git --git-dir=$repo pull --force
+   rm -f $(echo -e $1)repo/*
+   git clone https://github.com/lost-osiris/nfs-diag.git $repo
    #git --git-dir=$repo fetch --all --force
    #git --git-dir=$repo reset --hard
    #git --git-dir=$repo rebase origin/master
