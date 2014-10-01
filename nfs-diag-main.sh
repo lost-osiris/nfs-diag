@@ -25,7 +25,7 @@ if [ "$ARG" != "" ]; then
    if [[ $UPDATE == true ]]; then
       sh $(echo -e $path)update_script.sh $path
    else
-      python $all_args
+      python $(echo -e $path)main.py $all_args
    fi
    
 fi
