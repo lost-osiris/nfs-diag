@@ -1,35 +1,25 @@
 from write_log import Logger
 from auto import Auto
 from tcpdump import TcpDump
+from data import Data
 import os, sys, time
 
-class Manual(Auto):
+class Manual(object):
    def __init__(self, **kwargs):
-
-      self.data = {
-         'servers': {}
-      }
-
-      for key, val in kwargs.items():
-         if type(val) == list and len(val) == 1:
-            self[key] = val[0]
-         else:
-            self[key] = val
-
-      if self.location == False:
-         self.location = "/tmp/"
-
       self.logger = Logger(str(self.location + "commandline_output.txt"))
+
+      self.data = Data(kwargs)
 
       #interface and ip aren't specified
       if self.server_ip == False and self.interface == False:
-         self.server_ip = self.find_ip()
+         self.server_ip = self.data.find_ip()
          self.interface = []
 
          for i in self.server_ip: 
             self.interface.append(self.find_interface(i))
 
          self.interactive(self.data)
+
       #ip is specified but interface isn't
       else:
          test_ip = self.find_ip()
@@ -67,10 +57,10 @@ class Manual(Auto):
 
       
    def interactive(self, data):
-      mapping = self.data
       output = "Starting Manual Mode\n"
-      for (key, value), i in zip(data['servers'].items(), range(0, len(data['servers']))):
-         self.data['servers'][key]['mapping'] = i
+      servers = self.data.get_all_servers()
+
+      for (key, value), i in zip(servers.items(), range(0, len(servers))):
          output += "\t" + str(i) +") " + value['server_ip'] + " on " + value['client_mount'] + "\n"
 
       output += "Which server would you like to test on " + str(range(0, len(data['servers']))) + ": "
@@ -85,11 +75,11 @@ class Manual(Auto):
                user = int(user)
             except:
                self.logger.log("\n*** Invalid selection ***\n")
-               user = self.logger.log(str("Which server would you like to test on " + str(range(0, len(data['servers']))) + ": "), log_input=True)
+               user = self.logger.log(str("Which server would you like to test on " + str(range(0, len(servers))) + ": "), log_input=True)
                continue
 
             if user in options:
-               for key, value in mapping['servers'].items():
+               for key, value in servers.items():
                   if value['mapping'] == user:
                      tcp = TcpDump(self, value['server_ip'], value['interface'])
 
@@ -114,7 +104,7 @@ class Manual(Auto):
                         sys.exit()
             else:
                self.logger.log("\n*** Invalid selection ***\n")
-               user = self.logger.log(str("Which server would you like to test on " + str(range(0, len(data['servers']))) + ": "), log_input=True)
+               user = self.logger.log(str("Which server would you like to test on " + str(range(0, len(servers))) + ": "), log_input=True)
 
       except KeyboardInterrupt:
          self.logger.log("\nExiting")
