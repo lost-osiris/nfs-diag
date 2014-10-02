@@ -81,8 +81,13 @@ class Manual(Auto):
          user = self.logger.log(output, log_input=True)
 
          while True:
-            user = int(user)
-        
+            try:
+               user = int(user)
+            except:
+               self.logger.log("\n*** Invalid selection ***\n")
+               user = self.logger.log(str("Which server would you like to test on " + str(range(0, len(data['servers']))) + ": "), log_input=True)
+               continue
+
             if user in options:
                for key, value in mapping['servers'].items():
                   if value['mapping'] == user:
