@@ -7,9 +7,7 @@ import os, sys, re, subprocess, time
 PIPE = subprocess.PIPE
 class Auto(object):
    def __init__(self, **kwargs):
-      self.logger = Logger(str(self.location + "commandline_output.txt"))
-
-      self.data = Data(kwargs)
+      self.data = Data(**kwargs)
 
       self.run()
 
@@ -20,11 +18,11 @@ class Auto(object):
 
    def run(self):
       pool = []
-      self.logger.log("If you want to exit hit \"CTRL + c\"")
+      self.data.log("If you want to exit hit \"CTRL + c\"")
       for key, value in self.data.get_all_servers().items():
          ip = key
-         interface = self.find_interface(ip)
-         tcp = TcpDump(self, ip, interface)
+         interface = self.data.find_interface(ip)
+         tcp = TcpDump(self.data, ip, interface)
          pool.append(tcp)
          
       try: 
@@ -35,13 +33,14 @@ class Auto(object):
                   count += 1
 
             if count == len(pool):
-               self.logger.log("\n*** Exiting ***")
+               self.data.log("\n*** Exiting ***")
                sys.exit()
 
             continue
       except KeyboardInterrupt:
-         self.logger.log("\n*** Exiting ***")
+         self.data.log("\n*** Exiting ***")
          for i in pool:
             i.kill_tcpdump()
+         self.data.log("\n*** Done ***")
          sys.exit()
 

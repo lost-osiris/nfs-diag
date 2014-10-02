@@ -1,4 +1,6 @@
 from write_log import Logger
+import os, sys
+
 class Error(object):
    def __init__(self, error_type, log_location):
       self.__set_error(error_type)
@@ -17,7 +19,7 @@ class Error(object):
 
 class InvalidIp(object):
    def __init__(self, message=None):
-      if message == None
+      if message == None:
          self.message = "Invalid Ip Specified."
       else:
          self.message = message
@@ -27,7 +29,7 @@ class InvalidIp(object):
 
 class FilePathNotFound(object):
    def __init__(self, message=None):
-      if message == None
+      if message == None:
          self.message = "File Path specified does not exist."
       else:
          self.message = message

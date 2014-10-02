@@ -1,7 +1,6 @@
-from auto import Auto
-from manual import Manual
-from update import Update
-from write_log import Logger
+from nfs-diag import Auto, Manual, Update
+from nfs-diag.write_log import Logger
+
 import os, sys, argparse, subprocess, inspect
 features = '''
     1) Interactive mode allows users to select which nfs server to run tcpdump
@@ -32,15 +31,6 @@ script_description = '''
    directory.
 '''
 
-def check_log(args):
-   print ("check_log\n", vars(args))
-
-def auto(args):
-   print ("Auto\n", vars(args))
-
-def manual(args):
-   print ("Manual\n", vars(args))
-
 PIPE = subprocess.PIPE
 
 if __name__ == '__main__':
@@ -54,13 +44,13 @@ if __name__ == '__main__':
    Takes case number and apply
    it to output file of TCP dump.
    '''
-   parser.add_argument('-c', '--case_number', help=dest, nargs=1, type=str, default=False)
+   parser.add_argument('-c', '--case_number', help=dest, type=str, default=False)
 
    dest = '''The name of the .pcap file that will be outputed'''
-   parser.add_argument('-f', '--file_name', help=dest, nargs=1, type=str, default=False)
+   parser.add_argument('-f', '--file_name', help=dest, type=str, default=False)
 
    dest = '''The location where all files will be outputed'''
-   parser.add_argument('-l', '--location', help=dest, nargs=1, type=str, default=False)
+   parser.add_argument('-l', '--location', help=dest, type=str, default=False)
 
    dest = '''
       Specify a list of files to check for either specified strings or default.
@@ -79,13 +69,13 @@ if __name__ == '__main__':
    parser.add_argument("-m", "--messages", help=dest, nargs="?", type=str, default=messages)
 
    dest = 'Must specify NFS server IP address. Script finds interface for TCP dump with supplied IP address.'
-   parser.add_argument('-s', '--server_ip', help=dest, nargs=1, type=str, default=False)
+   parser.add_argument('-s', '--server_ip', help=dest, type=str, default=False)
 
    dest = '''
       Must specify an interface for TCP dump to run on. 
       Script will find server mounted by specified interface.
    '''
-   parser.add_argument('-i', '--interface', help=dest, nargs=1, type=str, default=False)
+   parser.add_argument('-i', '--interface', help=dest, type=str, default=False)
 
    dest = '''
      Updates the script.

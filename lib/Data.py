@@ -1,8 +1,11 @@
+from write_log import Logger
 import ErrorType
 import os, sys, re, subprocess, time
 
+PIPE = subprocess.PIPE
+
 class Data(object):
-   def __init__(self, **kwargs)
+   def __init__(self, **kwargs):
       self.data = {'servers': {}, }      
 
       for key, val in kwargs.items():
@@ -40,7 +43,7 @@ class Data(object):
             }
 
             self.data['servers'][server['server_ip']] = server
-            self.data['servers'][servers['server_ip']]['mapping'] = count
+            self.data['servers'][server['server_ip']]['mapping'] = count
             count += 1
             ip.append(server['server_ip'])
 
@@ -66,14 +69,19 @@ class Data(object):
       results = regex.match(ip)
 
       if results == None:
-         sys.exit()
+         error = ErrorType.InvalidIp()
+         ErrorType.Error(error, self.log_file)
 
       ping = subprocess.Popen([str('ping -c 1 -w 1 -q ' + ip + " | grep packet | awk '{ print $1; print $4 }'")], shell=True, stdout=PIPE, stderr=PIPE)
 
       results = ping.stdout.readlines()
       if results[0] != results[1]:
-         self.logger.log(str("Server Ip specified (" + self.server_ip +") timed out. Exiting"))
-         sys.exit()
+         message = str("Server Ip specified (" + ip +") timed out. Exiting")
+         error = ErrorType.InvalidIp(message=message)
+         ErrorType.Error(error, self.log_file)
+
+   def log(self, *args, **kwargs):
+      self.logger.log(args[0], kwargs)
 
    def get_case(self):
       return self.case_number

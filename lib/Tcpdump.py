@@ -4,13 +4,13 @@ import os, sys, time, select, subprocess
 
 PIPE = subprocess.PIPE
 class TcpDump(object):
-   def __init__(self, obj, ip, interface):
-      self.file_name = obj.get_file_name()
-      self.location = obj.get_location()
-      self.case = obj.get_case()
+   def __init__(self, data, ip, interface):
+      self.file_name = data.get_file_name()
+      self.location = data.get_location()
+      self.case = data.get_case()
       self.ip = ip
       self.interface = interface
-      self.obj = obj
+      self.data = data
 
       if self.file_name == False:
          if self.case == False:
@@ -33,7 +33,7 @@ class TcpDump(object):
 
       self.output = self.location + self.file_name
 
-      if self.obj.test_ip(self.ip) != False:
+      if self.data.test_ip(self.ip) != False:
          self.process = Process(target=self.run_tcpdump(), args=())
          self.process_check = Process(target=self.check_tcpdump, args=())
 
@@ -46,8 +46,8 @@ class TcpDump(object):
          return
 
    def check_tcpdump(self):
-      if self.obj.check_log == True:
-         process = Process(target=LogWatcher, args=(self.obj.log_files, self.obj.messages, self.pids['subprocess'], self.obj))
+      if self.data.check_log == True:
+         process = Process(target=LogWatcher, args=(self.data_files, self.data.messages, self.pids['subprocess'], self.data))
          process.start()
 
       while True:
@@ -62,7 +62,7 @@ class TcpDump(object):
                message += "\nError running tcpdump\n"
                message += "Tcpdump Error: \"%s\"\n" % self.error_data.replace("\n", "")
                message += "Tcpdump Command: \"%s\"" % ' '.join(map(str,self.tcpdump_command))
-            self.obj.logger.log(message)
+            self.data.log(message)
 
             self._stop_tcpdump()
 
@@ -76,11 +76,11 @@ class TcpDump(object):
       message += "\nOutput Location: " + self.output + "\n"
       self.tcpdump_command = ['tcpdump', '-s0', '-i', self.interface, 'host', self.ip, '-C', '1024MB', '-w', self.output]
 
-      self.obj.logger.log(message)
+      self.data.log(message)
       self.sub_process = subprocess.Popen(self.tcpdump_command, shell=False, stdout=PIPE, stderr=PIPE, stdin=PIPE)
 
       message = str("*** " + time.strftime("[%X %x TimeZone: %Z]") + " Running tcpdump on the following pid: " + str(self.sub_process.pid) + " ***")
-      self.obj.logger.log(message)
+      self.data.log(message)
 
       r, w, e = select.select([self.sub_process.stderr], [self.sub_process.stdout], [], 2)
       r2, w2, e2 = select.select([self.sub_process.stdout], [], [], 1)
@@ -108,7 +108,7 @@ class TcpDump(object):
 
          self.tcpdump_output = str("\nTcpdump Command: \"" + ' '.join(map(str,self.tcpdump_command)) + "\"\n" + output)
 
-         self.obj.logger.log(self.tcpdump_output, no_print=True)
+         self.data.log(self.tcpdump_output, no_print=True)
 
       try:
          self.sub_process.terminate()
@@ -132,7 +132,7 @@ class TcpDump(object):
 
       self.tcpdump_output = str("\nTcpdump Command: \"" + ' '.join(map(str,self.tcpdump_command)) + "\"\n" + output)
 
-      self.obj.logger.log(self.tcpdump_output, no_print=True)
+      self.data.log(self.tcpdump_output, no_print=True)
 
       sys.stdout.flush()
       sys.stderr.flush()
