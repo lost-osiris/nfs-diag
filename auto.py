@@ -102,7 +102,7 @@ class Auto(object):
 
       results = ping.stdout.readlines()
       if results[0] != results[1]:
-         self.logger.log(str("Server Ip specified (" + self.ip +") timed out. Exiting"))
+         self.logger.log(str("Server Ip specified (" + self.server_ip +") timed out. Exiting"))
          sys.exit()
 
    def get_case(self):
